@@ -1,4 +1,4 @@
-package by.matrosov.appl;
+package by.matrosov.appl.model;
 
 import javax.persistence.*;
 

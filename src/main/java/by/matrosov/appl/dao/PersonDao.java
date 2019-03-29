@@ -1,4 +1,6 @@
-package by.matrosov.appl;
+package by.matrosov.appl.dao;
+
+import by.matrosov.appl.model.Person;
 
 public interface PersonDao {
 

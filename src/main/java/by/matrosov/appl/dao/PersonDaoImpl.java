@@ -1,12 +1,13 @@
-package by.matrosov.appl;
+package by.matrosov.appl.dao;
 
+import by.matrosov.appl.model.Person;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class PersonDaoImpl implements PersonDao{
+@Repository("PersonDaoImpl")
+public class PersonDaoImpl implements PersonDao {
 
     private SessionFactory sessionFactory;
 

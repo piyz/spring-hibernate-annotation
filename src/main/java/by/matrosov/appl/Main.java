@@ -1,19 +1,23 @@
 package by.matrosov.appl;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import by.matrosov.appl.dao.PersonDaoImpl;
+import by.matrosov.appl.model.Person;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-data.xml");
 
-        PersonDaoImpl personDao = (PersonDaoImpl) ctx.getBean("PersonDaoImpl");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.scan("by.matrosov.appl");
+        context.refresh();
 
-        //hibernateSpitterDao.addSpitter(new Person("new"));
-        //hibernateSpitterDao.addSpitter(new Spitter("Bob", "1111", "Bob B"));
+        PersonDaoImpl personDao = (PersonDaoImpl) context.getBean("PersonDaoImpl");
 
         System.out.println(personDao.getPersonById(1));
         System.out.println(personDao.getPersonById(2));
         System.out.println(personDao.getPersonById(3));
+
+        personDao.addPerson(new Person("wowowowow"));
     }
 }
