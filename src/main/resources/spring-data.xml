@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- ###################### HIBERNATE ######################## -->
+
+    <!-- способ коннекта к базе данных через пулл Apache DBCP -->
+    <!-- 1
+         dataSource для Hibernate -->
+    <!-- это учебный пример, ввиду чего для наглядности мы не инкапсулируем
+         а дублируем проперти, помни что дублирование кода - это плохо,
+         здесь поддержка кода не будет осуществлятся, в случае неактуальности примера
+         будет создан новый -->
+    <bean id="dataSourceHibernate" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/hello?
+                  useSSL=false&amp;
+                  useUnicode=true&amp;
+                  useJDBCCompliantTimezoneShift=true&amp;
+                  useLegacyDatetimeCode=false&amp;
+                  serverTimezone=UTC" />
+        <property name="username" value="postgres" />
+        <property name="password" value="root" />
+    </bean>
+
+    <!-- 2
+         Интерфейс Session обеспечивает
+         базовую функциональность доступа к данным, позволяя сохранять,
+         обновлять, удалять и загружать объекты в/из базы данных. Именно
+         через интерфейс Session прикладные объекты DAO будут выполнять
+         все операции с хранилищем данных.
+
+         получить сессию мы можем из специально обученной фабрики LocalSessionFactoryBean
+         -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceHibernate" />
+        <!-- Здесь мы указываем файлы в которых сконфигурированы поджо для hibernate
+             есть вид записи где мы указываем директорию а не отдельные файлы
+             это очень удобно -->
+        <property name="annotatedClasses">
+            <list>
+                <value>by.matrosov.appl.Person</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 3
+         работа с шаблоном HibernateSpitterDao - это наша имплиментация DAO (будто-бы),
+         внедряем его -->
+    <bean id="PersonDaoImpl"
+          class="by.matrosov.appl.PersonDaoImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+</beans>
